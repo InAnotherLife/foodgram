@@ -13,21 +13,23 @@ class IngredientFilter(FilterSet):
 
 
 class RecipeFilter(FilterSet):
-    """Фильтрация рецепта по избранному, автору, списку покупок и тегам."""
-    is_favorited = filters.BooleanFilter(
-        label='В избранном',
-        method='get_is_favorited'
-    )
+    """
+    Поиск рецепта по автору, тегу, нахождению в избранном и списку покупок.
+    """
     author = filters.ModelChoiceFilter(queryset=CustomUser.objects.all())
-    is_in_shopping_cart = filters.BooleanFilter(
-        label='В списоке покупок',
-        method='get_is_in_shopping_cart'
-    )
     tags = filters.ModelMultipleChoiceFilter(
         label='Тег',
         queryset=Tag.objects.all(),
         field_name='tags__slug',
         to_field_name='slug'
+    )
+    is_favorited = filters.BooleanFilter(
+        label='В избранном',
+        method='get_is_favorited'
+    )
+    is_in_shopping_cart = filters.BooleanFilter(
+        label='В списке покупок',
+        method='get_is_in_shopping_cart'
     )
 
     class Meta:

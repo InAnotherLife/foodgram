@@ -5,7 +5,7 @@ from django.db import models
 class CustomUser(AbstractUser):
     """Модель кастомного пользователя."""
     email = models.EmailField(
-        'Email',
+        verbose_name='Email',
         max_length=254,
         unique=True,
         blank=False

@@ -8,16 +8,25 @@ from users.models import CustomUser
 class Tag(models.Model):
     """Модель тегов."""
     name = models.CharField(
-        'Название',
+        verbose_name='Название',
         max_length=200,
         unique=True,
         blank=False
     )
-    color = fields.ColorField('Цвет', max_length=7, unique=True, blank=False)
-    slug = models.SlugField('Слаг', max_length=200, unique=True, blank=False)
+    color = fields.ColorField(
+        verbose_name='Цвет',
+        max_length=7,
+        unique=True,
+        blank=False
+    )
+    slug = models.SlugField(
+        verbose_name='Тег',
+        max_length=200,
+        unique=True,
+        blank=False
+    )
 
     class Meta:
-        ordering = ('id', )
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
 
@@ -27,9 +36,13 @@ class Tag(models.Model):
 
 class Ingredient(models.Model):
     """Модель ингредиентов."""
-    name = models.CharField('Название', max_length=200, blank=False)
+    name = models.CharField(
+        verbose_name='Название',
+        max_length=200,
+        blank=False
+    )
     measurement_unit = models.CharField(
-        'Единица измерения',
+        verbose_name='Единица измерения',
         max_length=200,
         blank=False
     )
@@ -45,20 +58,28 @@ class Ingredient(models.Model):
 
 class Recipe(models.Model):
     """Модель рецептов."""
-    name = models.CharField('Название', max_length=200, blank=False)
+    name = models.CharField(
+        verbose_name='Название',
+        max_length=200,
+        blank=False
+    )
     cooking_time = models.PositiveSmallIntegerField(
-        'Время приготовления, мин.',
+        verbose_name='Время приготовления, мин.',
         validators=(MinValueValidator(1, message='Минимальное значение 1'), ),
         blank=False
     )
-    text = models.TextField('Описание', blank=False)
+    text = models.TextField(verbose_name='Описание', blank=False)
     author = models.ForeignKey(
         CustomUser,
-        on_delete=models.CASCADE,
         verbose_name='Автор',
+        on_delete=models.CASCADE,
         blank=False
     )
-    image = models.ImageField('Картинка', upload_to='recipes/', blank=False)
+    image = models.ImageField(
+        verbose_name='Картинка',
+        upload_to='recipes/',
+        blank=False
+    )
     tags = models.ManyToManyField(
         Tag,
         verbose_name='Тег',
@@ -66,9 +87,9 @@ class Recipe(models.Model):
     )
     ingredients = models.ManyToManyField(
         Ingredient,
+        verbose_name='Список ингредиентов',
         through='RecipeIngredient',
         through_fields=('recipe', 'ingredient'),
-        verbose_name='Список ингредиентов',
         blank=False
     )
 
@@ -106,19 +127,19 @@ class RecipeIngredient(models.Model):
     """
     recipe = models.ForeignKey(
         Recipe,
-        on_delete=models.CASCADE,
         verbose_name='Рецепт',
+        on_delete=models.CASCADE,
         related_name='recipe_ingredient'
     )
     ingredient = models.ForeignKey(
         Ingredient,
-        on_delete=models.CASCADE,
         verbose_name='Ингредиент',
+        on_delete=models.CASCADE,
         related_name='recipe_ingredient'
     )
     amount = models.PositiveSmallIntegerField(
-        validators=(MinValueValidator(1, message='Минимальное значение 1'), ),
-        verbose_name='Количество'
+        verbose_name='Количество',
+        validators=(MinValueValidator(1, message='Минимальное значение 1'), )
     )
 
     class Meta:
@@ -140,14 +161,14 @@ class AbstractModel(models.Model):
     """
     user = models.ForeignKey(
         CustomUser,
-        on_delete=models.CASCADE,
         verbose_name='Пользователь',
+        on_delete=models.CASCADE,
         related_name='%(class)s'
     )
     recipe = models.ForeignKey(
         Recipe,
-        on_delete=models.CASCADE,
         verbose_name='Рецепт',
+        on_delete=models.CASCADE,
         related_name='%(class)s'
     )
 
@@ -184,13 +205,13 @@ class Subscription(models.Model):
     """
     user = models.ForeignKey(
         CustomUser,
-        on_delete=models.CASCADE,
         verbose_name='Подписчик'
+        on_delete=models.CASCADE,
     )
     author = models.ForeignKey(
         CustomUser,
-        on_delete=models.CASCADE,
         verbose_name='Автор',
+        on_delete=models.CASCADE,
         related_name='following'
     )
 
