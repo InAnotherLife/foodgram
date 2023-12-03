@@ -9,7 +9,7 @@ class AbstractCreateDeleteMixin():
 
     # Метод выполняет операции добавления и удаления объектов
     def perform_action(self, model, object, serializer, request, pk,
-                       keyword, mess_fail_add, mess_fail_no_exists):
+                       keyword, message_add_fail, message_no_exists):
         user = request.user
         obj = get_object_or_404(object, id=pk)
 
@@ -19,7 +19,7 @@ class AbstractCreateDeleteMixin():
                 **{keyword: obj}
             ).exists():
                 raise serializers.ValidationError(
-                    {'message': mess_fail_add}
+                    {'message': message_add_fail}
                 )
             model.objects.create(user=user, **{keyword: obj})
             ser = serializer(
@@ -34,7 +34,7 @@ class AbstractCreateDeleteMixin():
                 **{keyword: obj}
             ).exists():
                 raise serializers.ValidationError(
-                    {'message': mess_fail_no_exists}
+                    {'message': message_no_exists}
                 )
             model.objects.get(user=user, **{keyword: obj}).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
