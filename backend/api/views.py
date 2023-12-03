@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db.models import Sum
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
@@ -147,6 +149,8 @@ class RecipeViewSet(AbstractCreateDeleteMixin, ModelViewSet):
         ).order_by(
             'ingredient__name'
         )
+        date = datetime.now().strftime('%d_%m_%Y')
+        filename = f'{request.user.username}_shopping_list_{date}_.txt'
         shopping_cart = 'Ваш список покупок:\n'
         for ingredient in ingredients:
             shopping_cart += (
@@ -154,4 +158,7 @@ class RecipeViewSet(AbstractCreateDeleteMixin, ModelViewSet):
                 f'{ingredient["amount_sum"]} '
                 f'{ingredient["ingredient__measurement_unit"]}\n'
             )
-        return HttpResponse(shopping_cart, content_type='text/plain')
+        response = HttpResponse(shopping_cart, content_type='text/plain')
+        response['Content-Disposition'] = f'attachment; filename={filename}'
+        return response
+
