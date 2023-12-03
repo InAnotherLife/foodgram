@@ -79,7 +79,7 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def clean(self):
         if not self.name:
             raise ValidationError('Название рецепта не может быть пустым!')
@@ -97,7 +97,7 @@ class Recipe(models.Model):
             raise ValidationError(
                 'Список ингредиентов рецепта не может быть пустым!'
             )
-        
+
 
 class RecipeIngredient(models.Model):
     """

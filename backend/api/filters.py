@@ -17,7 +17,7 @@ class RecipeFilter(FilterSet):
     is_favorited = filters.BooleanFilter(
         label='В избранном',
         method='get_is_favorited'
-        )
+    )
     author = filters.ModelChoiceFilter(queryset=CustomUser.objects.all())
     is_in_shopping_cart = filters.BooleanFilter(
         label='В списоке покупок',
