@@ -24,6 +24,7 @@ class CustomUserViewSet(AbstractCreateDeleteMixin, UserViewSet):
     pagination_class = CustomPagination
     http_method_names = ('get', 'post', 'patch', 'delete')
 
+    # Получение подписчиков пользователя
     @action(
         methods=('get', ),
         detail=False
@@ -38,6 +39,7 @@ class CustomUserViewSet(AbstractCreateDeleteMixin, UserViewSet):
         )
         return self.get_paginated_response(serializer.data)
 
+    # Подписка на автора рецепта или отписка от автора рецепта
     @action(
         methods=('post', 'delete'),
         detail=True
