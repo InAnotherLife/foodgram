@@ -205,8 +205,8 @@ class Subscription(models.Model):
     """
     user = models.ForeignKey(
         CustomUser,
-        verbose_name='Подписчик'
-        on_delete=models.CASCADE,
+        verbose_name='Подписчик',
+        on_delete=models.CASCADE
     )
     author = models.ForeignKey(
         CustomUser,
