@@ -4,7 +4,7 @@ from users.models import CustomUser
 
 
 class IngredientFilter(FilterSet):
-    """Поиск ингредиента по вхождению в начало названия."""
+    """Поиск ингредиента по начальным символам."""
     name = filters.CharFilter(lookup_expr='startswith')
 
     class Meta:
@@ -14,7 +14,7 @@ class IngredientFilter(FilterSet):
 
 class RecipeFilter(FilterSet):
     """
-    Поиск рецепта по автору, тегу, нахождению в избранном и списку покупок.
+    Поиск рецепта по автору, тегу, по нахождению в избранном и списку покупок.
     """
     author = filters.ModelChoiceFilter(queryset=CustomUser.objects.all())
     tags = filters.ModelMultipleChoiceFilter(
@@ -36,12 +36,14 @@ class RecipeFilter(FilterSet):
         model = Recipe
         fields = ('author', 'tags', 'is_favorited', 'is_in_shopping_cart')
 
+    # Фильтр по избранному
     def get_is_favorited(self, queryset, name, value):
         user = self.request.user
         if value:
             return queryset.filter(favorite__user=user)
         return queryset
 
+    # Фильтр по списку покупок
     def get_is_in_shopping_cart(self, queryset, name, value):
         user = self.request.user
         if value:

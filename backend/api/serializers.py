@@ -62,6 +62,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             'cooking_time'
         )
 
+    # Получение ингредиентов определенного рецепта
     def get_ingredients(self, obj):
         ingredients = RecipeIngredient.objects.filter(
             recipe=obj
@@ -70,11 +71,14 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
         return RecipeIngredientSerializer(ingredients, many=True).data
 
+    # Получение пользователя и проверка аутентифицирован ли он
     def get_and_check_user(self):
         user = self.context.get('request').user
         if user.is_authenticated:
             return user
 
+    # Получение пользователя и проверка, что рецепт находится в избранном у
+    # пользователя
     def get_is_favorited(self, obj):
         user = self.get_and_check_user()
         return user and Favorite.objects.filter(
@@ -82,6 +86,8 @@ class RecipeSerializer(serializers.ModelSerializer):
             recipe=obj
         ).exists()
 
+    # Получение пользователя и проверка, что рецепт находится в списке
+    # покупок у пользователя
     def get_is_in_shopping_cart(self, obj):
         user = self.get_and_check_user()
         return user and ShoppingCart.objects.filter(
@@ -113,11 +119,14 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
             'cooking_time'
         )
 
+    # Получение пользователя и проверка аутентифицирован ли он
     def get_and_check_user(self):
         user = self.context.get('request').user
         if user.is_authenticated:
             return user
 
+    # Получение пользователя и проверка, что рецепт находится в избранном у
+    # пользователя
     def get_is_favorited(self, obj):
         user = self.get_and_check_user()
         return user and Favorite.objects.filter(
@@ -125,6 +134,8 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
             recipe=obj
         ).exists()
 
+    # Получение пользователя и проверка, что рецепт находится в списке
+    # покупок у пользователя
     def get_is_in_shopping_cart(self, obj):
         user = self.get_and_check_user()
         return user and ShoppingCart.objects.filter(
@@ -132,6 +143,7 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
             recipe=obj
         ).exists()
 
+    # Создание нового рецепта, на основании предоставленных данных
     def create(self, validated_data):
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
@@ -147,6 +159,7 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
             )
         return recipe
 
+    # Обновление существующего рецепта, на основании предоставленных данных
     def update(self, recipe, validated_data):
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
@@ -163,6 +176,7 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
             )
         return super().update(recipe, validated_data)
 
+    # Преобразует объект рецепта в словарь для его представления
     def to_representation(self, recipe):
         request = self.context.get('request')
         context = {'request': request}
@@ -188,6 +202,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             'recipes_count'
         )
 
+    # Получение рецептов, созданных автором
     def get_recipes(self, obj):
         request = self.context.get('request')
         recipes = Recipe.objects.filter(author=obj)
@@ -200,9 +215,11 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             many=True,
             context=context).data
 
+    # Получение количества рецептов, созданных автором
     def get_recipes_count(self, obj):
         return Recipe.objects.filter(author=obj).count()
 
+    # Проверка, что текущий пользователь подписан на автора рецепта
     def get_is_subscribed(self, obj):
         user = self.context.get('request').user
         return user.is_authenticated and Subscription.objects.filter(

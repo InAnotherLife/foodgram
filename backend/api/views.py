@@ -81,16 +81,22 @@ class RecipeViewSet(AbstractCreateDeleteMixin, ModelViewSet):
     pagination_class = CustomPagination
     http_method_names = ('get', 'post', 'patch', 'delete')
 
+    # Получение всех объектов модели Recipe с предварительной выборкой
+    # связанных моделей recipe_ingredient__ingredient и tags для
+    # оптимизации запросов к БД за счет сокращения количества обращений к ней
     def get_queryset(self):
         return Recipe.objects.prefetch_related(
             'recipe_ingredient__ingredient', 'tags'
         ).all()
 
+    # Если создается новый рецепт или обновляется существующий, то возвращается
+    # RecipeCreateUpdateSerializer, иначе возвращается RecipeSerializer
     def get_serializer_class(self):
         if self.action in ('create', 'partial_update'):
             return RecipeCreateUpdateSerializer
         return RecipeSerializer
 
+    # Добавление текущего рецепта в избранное или удаление его из избранного
     @action(
         methods=('post', 'delete'),
         detail=True
@@ -107,6 +113,8 @@ class RecipeViewSet(AbstractCreateDeleteMixin, ModelViewSet):
             'Рецепт отсутствует в избранном!'
         )
 
+    # Добавление текущего рецепта в список покупок или удаление его из списка
+    # покупок
     @action(
         methods=('post', 'delete'),
         detail=True
@@ -123,6 +131,7 @@ class RecipeViewSet(AbstractCreateDeleteMixin, ModelViewSet):
             'Рецепт отсутствует в корзине!'
         )
 
+    # Загрузка рецепта в виде txt-файла
     @action(
         methods=('get', ),
         detail=False
