@@ -71,7 +71,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
         return RecipeIngredientSerializer(ingredients, many=True).data
 
-    # Получение пользователя и проверка аутентифицирован ли он
+    # Получение пользователя и проверка авторизован ли он
     def get_and_check_user(self):
         user = self.context.get('request').user
         if user.is_authenticated:
@@ -119,7 +119,7 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
             'cooking_time'
         )
 
-    # Получение пользователя и проверка аутентифицирован ли он
+    # Получение пользователя и проверка авторизован ли он
     def get_and_check_user(self):
         user = self.context.get('request').user
         if user.is_authenticated:
@@ -143,7 +143,7 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
             recipe=obj
         ).exists()
 
-    # Создание нового рецепта, на основании предоставленных данных
+    # Создание нового рецепта
     def create(self, validated_data):
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
@@ -159,7 +159,7 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
             )
         return recipe
 
-    # Обновление существующего рецепта, на основании предоставленных данных
+    # Обновление существующего рецепта
     def update(self, recipe, validated_data):
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
@@ -176,7 +176,7 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
             )
         return super().update(recipe, validated_data)
 
-    # Преобразует объект рецепта в словарь для его представления
+    # Преобразует объект в формат, подходящий для представления
     def to_representation(self, recipe):
         request = self.context.get('request')
         context = {'request': request}

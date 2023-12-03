@@ -14,7 +14,7 @@ class IngredientFilter(FilterSet):
 
 class RecipeFilter(FilterSet):
     """
-    Поиск рецепта по автору, тегу, по нахождению в избранном и списку покупок.
+    Поиск рецепта по автору и тегу, по нахождению в избранном и списке покупок.
     """
     author = filters.ModelChoiceFilter(queryset=CustomUser.objects.all())
     tags = filters.ModelMultipleChoiceFilter(
