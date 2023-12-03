@@ -4,7 +4,7 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     """
-    Модель кастомного пользователя. Авторизация пользователя происходит по 
+    Модель кастомного пользователя. Авторизация пользователя происходит по
     e-mail и паролю.
     """
     email = models.EmailField(

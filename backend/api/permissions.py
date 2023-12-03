@@ -3,7 +3,7 @@ from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 class IsAdminOrAuthorOrReadOnly(BasePermission):
     """
-    Кастомное разрешение: создание и изменение объектов для администраторов и 
+    Кастомное разрешение: создание и изменение объектов для администраторов и
     авторов. Для остальных пользователей только чтение объекта.
     """
 
