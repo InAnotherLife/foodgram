@@ -9,7 +9,6 @@ class AbstractCreateDeleteMixin():
     удаления объектов.
     """
 
-    # Метод выполняет операции добавления и удаления объектов
     def perform_action(self, model, object, serializer, request, pk,
                        keyword, message_add_fail, message_no_exists):
         user = request.user
