@@ -1,4 +1,1 @@
-*.pyc linguist-vendored=true
-*.js linguist-vendored=true
-*.html linguist-vendored=true
-*.css linguist-vendored=true
+*.py linguist-language=python
