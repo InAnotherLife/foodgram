@@ -6,20 +6,14 @@ https://t.me/JohnWooooo
 
 [![Foodgram workflow](https://github.com/InAnotherLife/foodgram/actions/workflows/main.yml/badge.svg)](https://github.com/InAnotherLife/foodgram/actions/workflows/main.yml)
 
-***
-
 ## О проекте
 
 Foodgram - это сервис, позволяющий делиться своими кулинарными шедеврами. Здесь Вы можете создавать и публиковать свои рецепты, а также находить вдохновение в рецептах других пользователей.
-
-***
 
 ## Технологии
 * Django 4.2
 * Django REST framework 3.14
 * Python 3.10
-
-***
 
 ## 1. Инструкция по развертыванию проекта на локальном сервере
 1. Клонировать репозиторий и перейти в папку с проектом:
@@ -79,8 +73,6 @@ sudo docker compose -f docker-compose.local.yml exec backend python manage.py im
 API - http://localhost/api/  
 Админка - http://localhost/admin/  
 ReDoc - http://localhost/api/docs/
-
-***
 
 ## 2. Инструкция по развертыванию проекта на удаленном сервере
 1. Зайти на удаленный сервер и создать папку foodgram.
